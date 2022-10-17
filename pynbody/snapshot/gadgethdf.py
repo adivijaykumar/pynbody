@@ -369,16 +369,23 @@ class GadgetHDFSnap(SimSnap):
             # mass stored in header. We're out in the cold on our own.
             return units.Unit('1.0'), units.h**-1
         if len(match) > 0 :
-            try:
-                aexp = hdf[match[0]].attrs['aexp-scale-exponent']
-            except KeyError:
-                # gadget4 <sigh>
-                aexp = hdf[match[0]].attrs['a_scaling']
-            try:
-                hexp = hdf[match[0]].attrs['h-scale-exponent']
-            except KeyError:
-                # gadget4 <sigh>
-                hexp = hdf[match[0]].attrs['h_scaling']
+            if arr_name == "Velocities":
+                aexp, hexp = 0.5, 0.0
+
+            elif arr_name == "Coordinates":
+                aexp, hexp = 1.0, -1.0
+
+            else:
+                try:
+                    aexp = hdf[match[0]].attrs['aexp-scale-exponent']
+                except KeyError:
+                    # gadget4 <sigh>
+                    aexp = hdf[match[0]].attrs['a_scaling']
+                try:
+                    hexp = hdf[match[0]].attrs['h-scale-exponent']
+                except KeyError:
+                    # gadget4 <sigh>
+                    hexp = hdf[match[0]].attrs['h_scaling']
             return units.a**util.fractions.Fraction.from_float(float(aexp)).limit_denominator(), units.h**util.fractions.Fraction.from_float(float(hexp)).limit_denominator()
         else :
             return units.Unit('1.0'), units.Unit('1.0')
