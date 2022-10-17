@@ -47,7 +47,7 @@ def direct(f, np.ndarray[DTYPE_t, ndim=2] ipos, eps=None, int num_threads = 0):
     cdef np.ndarray[DTYPE_t, ndim=2] m_by_r2 = np.zeros((nips,3), dtype = ipos.dtype)
     cdef np.ndarray[DTYPE_t, ndim=1] m_by_r = np.zeros(nips, dtype = ipos.dtype)
     cdef np.ndarray[DTYPE_t, ndim=2] pos = f['pos'].view(np.ndarray)
-    cdef np.ndarray[DTYPE_t, ndim=1] mass = f['mass'].view(np.ndarray)
+    cdef np.ndarray[DTYPE_t, ndim=1] mass = f['mass'].view(np.ndarray).astype(np.float64)
     cdef unsigned int n = len(mass)
     cdef np.ndarray[DTYPE_t, ndim=1] epssq = eps * eps
 
